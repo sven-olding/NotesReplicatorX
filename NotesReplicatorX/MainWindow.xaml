@@ -1,0 +1,94 @@
+﻿<Window x:Class="NotesReplicatorX.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:NotesReplicatorX"
+        mc:Ignorable="d"
+        Title="NotesReplicatorX" Height="450" Width="800" Closing="Window_Closing">
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Orientation="Vertical">
+            <Label x:Name="label" Content="Saved Configurations" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" />
+            <ListBox x:Name="listBoxConfigurations" Height="300" HorizontalAlignment="Stretch" Margin="10,0,10,0" />
+            <Button x:Name="btnAddConfig" Content="Add Configuration" Click="BtnAddConfig_Click" HorizontalAlignment="Left" Margin="10 5 5 10" VerticalAlignment="Top" IsDefault="False" Height="20" />
+            <Button x:Name="btnRemoveConfig" Content="Remove Configuration" Click="BtnRemoveConfig_Click" HorizontalAlignment="Left" Margin="10 0 5 0" VerticalAlignment="Top" IsDefault="False" Height="20" Width="132" Grid.Column="1" Grid.Row="4"/>
+        </StackPanel>
+
+        <Grid Grid.Column="1" Margin="10" DataContext="{Binding ElementName=listBoxConfigurations, Path=SelectedItem}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+
+            <Label x:Name="label1" Content="Source Server" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
+            <TextBox x:Name="tbSourceServer" HorizontalAlignment="Stretch" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0">
+                <TextBox.Text>
+                    <Binding Path="SourceServer" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" Mode="TwoWay">
+                    </Binding>
+                </TextBox.Text>
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
+
+            <Label x:Name="label1_Copy1" Content="Source Directory" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1"/>
+            <TextBox x:Name="tbSourceDirectory" HorizontalAlignment="Stretch" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" Text="{Binding Path=SourceDirectory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
+
+            <Label x:Name="label1_Copy" Content="Target Server" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2"/>
+            <TextBox x:Name="tbTargetServer" HorizontalAlignment="Stretch" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Grid.Row="2" Text="{Binding Path=TargetServer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
+
+            <Label x:Name="label1_Copy2" Content="Save as" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="3"/>
+            <TextBox x:Name="tbSaveAsConfigName" HorizontalAlignment="Stretch" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
+
+            <Button x:Name="btnSaveConfig" Content="Save Configuration" Click="BtnSaveConfig_Click" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" IsDefault="False" Height="20" Width="132" Grid.Column="1" Grid.Row="4"/>
+
+            <Button x:Name="btnReplicate" Content="Replicate" Click="BtnReplicate_Click" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Top" IsDefault="True" Height="60" Width="103" Grid.Column="1" Grid.Row="5" />
+        </Grid>
+    </Grid>
+</Window>
