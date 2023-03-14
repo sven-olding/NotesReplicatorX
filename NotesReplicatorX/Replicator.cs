@@ -29,27 +29,35 @@ namespace NotesReplicatorX
             while (db != null)
             {
                 if (db.FilePath.ToLower().Contains(SourceFolder.ToLower()))
-                {
-                    logger.Info($"Replicating db: {db.FilePath}");
                     try
                     {
-                        if (db.Replicate(TargetServer))
+                        if (db.OpenByReplicaID(TargetServer, db.ReplicaID))
                         {
-                            logger.Info("Ok, database replicated");
+                            logger.Info($"Replicating db: {db.FilePath}");
+
+                            if (db.Replicate(TargetServer))
+                            {
+                                logger.Info("Ok, database replicated");
+                            }
+                            else
+                            {
+                                logger.Warn("Error replicating database");
+                            }
+
                         }
                         else
                         {
-                            logger.Warn("Error replicating database");
+                            logger.Info($"Creating new replica: {db.FilePath}");
+                            db.CreateReplica(TargetServer, db.FilePath);
                         }
                     }
                     catch (Exception ex)
                     {
                         logger.Error(ex, ex.Message);
                     }
-                }
-
-                db = dbDir.GetNextDatabase();
             }
+
+            db = dbDir.GetNextDatabase();
         }
     }
 }
