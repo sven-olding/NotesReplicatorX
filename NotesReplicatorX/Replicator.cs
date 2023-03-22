@@ -25,11 +25,13 @@ namespace NotesReplicatorX
             NotesSession session = new NotesSession();
             session.Initialize();
             NotesDbDirectory dbDir = session.GetDbDirectory(SourceServer);
+            logger.Info("================= START ==================");            
             NotesDatabase db = dbDir.GetFirstDatabase(DB_TYPES.NOTES_DATABASE);
             while (db != null)
             {
-                if (db.FilePath.ToLower().Contains(SourceFolder.ToLower()))
-                    try
+                try
+                {
+                    if (db.FilePath.ToLower().Contains(SourceFolder.ToLower()))
                     {
                         if (db.OpenByReplicaID(TargetServer, db.ReplicaID))
                         {
@@ -51,13 +53,15 @@ namespace NotesReplicatorX
                             db.CreateReplica(TargetServer, db.FilePath);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, ex.Message);
-                    }
-            }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, ex.Message);
+                }
 
-            db = dbDir.GetNextDatabase();
+                db = dbDir.GetNextDatabase();
+            }
+            logger.Info("================= FINISH =================");
         }
     }
 }
